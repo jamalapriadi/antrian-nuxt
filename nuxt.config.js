@@ -45,6 +45,7 @@ export default {
     '~/plugins/vue-toggle.js',
     '~/plugins/qr.js',
     '~/plugins/readmore.js',
+    '~/plugins/vue-html-to-paper.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

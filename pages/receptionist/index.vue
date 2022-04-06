@@ -15,22 +15,7 @@
             @edit="handleEdit"
             @delete="handleDelete"
             @changePerPage="handlechangePerPage"
-            @pagination="handlePagination"
-            @openQr="handleOpenQr" />
-
-        <b-modal id="modal-my-qrcode" hide-footer hide-header-close>
-            <template #modal-title>
-                {{namaqr}} QRCode
-            </template>
-
-            <center>
-                <vue-qr :size="400" id="qrcode" :text="logoBarcode" qid="testid"></vue-qr>
-            </center>
-
-            <div class="text-center" style="margin-top:10px;">
-                <a href="#" class="btn btn-block btn-primary" @click.prevent="downloadQr">Download</a>
-            </div>
-        </b-modal>
+            @pagination="handlePagination" />
         
     </div>
 </template>
@@ -43,10 +28,10 @@ export default {
     components: { nuxtCardDatatable },
     layout:'main',
     async fetch({store}){
-        await store.dispatch('merchant/get_data')
+        await store.dispatch('receptionist/get_data')
     },
     computed:{
-        ...mapState('merchant',{
+        ...mapState('receptionist',{
             fields: state=> state.fields,
             per_page: state=> state.per_page,
             lists: state => state.lists,
@@ -62,14 +47,11 @@ export default {
     },
     data(){
         return{
-            title:'Merchant',
-            mylinkuser:'',
-            logoBarcode:'',
-            namaqr:''
+            title:'Receptionist',
         }
     },
     methods:{
-        ...mapActions('merchant',['change_page','change_per_page','change_search_key','goToEdit','openDeleteModal']),
+        ...mapActions('receptionist',['change_page','change_per_page','change_search_key','goToEdit','openDeleteModal']),
 
         handleEdit(val){
             // this.goToEdit(val)
@@ -116,28 +98,6 @@ export default {
         handlechangePerPage(val){
             this.change_per_page(val)
         },
-
-        handleOpenQr(val){
-            this.namaqr = val.item.nama
-            this.logoBarcode = val.item.id
-            this.$bvModal.show('modal-my-qrcode')
-        },
-
-        downloadQr(){
-            var oQrcode = document.querySelector('#qrcode')
-            var url = oQrcode.src
-            var a = document.createElement('a')
-            var event = new MouseEvent('click')
-
-            //Download image name
-            a.download = this.namaqr+' QRCode'
-
-            //url 
-            a.href = url 
-
-            //Synthesis function, execute download 
-            a.dispatchEvent(event)
-        }
     }
 }
 </script>

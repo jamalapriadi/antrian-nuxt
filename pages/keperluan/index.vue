@@ -28,10 +28,10 @@ export default {
     components: { nuxtCardDatatable },
     layout:'main',
     async fetch({store}){
-        await store.dispatch('booklet/get_data')
+        await store.dispatch('keperluan/get_data')
     },
     computed:{
-        ...mapState('booklet',{
+        ...mapState('keperluan',{
             fields: state=> state.fields,
             per_page: state=> state.per_page,
             lists: state => state.lists,
@@ -47,11 +47,11 @@ export default {
     },
     data(){
         return{
-            title:'Booklet',
+            title:'Keperluan',
         }
     },
     methods:{
-        ...mapActions('booklet',['change_page','change_per_page','change_search_key','goToEdit','openDeleteModal']),
+        ...mapActions('keperluan',['change_page','change_per_page','change_search_key','goToEdit','openDeleteModal']),
 
         handleEdit(val){
             // this.goToEdit(val)

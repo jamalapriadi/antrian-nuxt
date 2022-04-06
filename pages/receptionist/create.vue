@@ -10,7 +10,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
     layout:'main',
     computed:{
-        ...mapState('member',{
+        ...mapState('receptionist',{
             backBtn: state=> state.backBtn,
             forms: state=> state.forms,
             errors: state=> state.errors,
@@ -22,12 +22,12 @@ export default {
     },
     data(){
         return {
-            title:"Create New Member",
+            title:"Buat Data Receptionist",
             btnText: "Save",
         }
     },
     methods:{
-        ...mapActions('member',['save']),
+        ...mapActions('receptionist',['save']),
 
         handleSubmit(val){
             this.save(val)

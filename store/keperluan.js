@@ -3,14 +3,13 @@ export const state = () => ({
     fields:[
         {key:'No', label:'No.', sortable:false, thStyle:{with:'5%'}},
         {key:'nama', label:'Nama', sortable:false},
-        {key:'alamat', label:'Alamat', sortable:false},
-        {key:'jumlah_user', label:'Jumlah User', sortable:false},
-        {key: 'actionsmerchant',label:'', sortable: false, thStyle:{width:'15%'}}, 
+        {key:'no_urut', label:'No. Urut(Priority)', sortable:false},
+        {key: 'actions',label:'', sortable: false, thStyle:{width:'15%'}}, 
     ],
-    addLink: '/merchant/create',
+    addLink: '/keperluan/create',
     btnAction:true,
-    edit_data_form: '/merchant',
-    backBtn:'/merchant',
+    edit_data_form: '/keperluan',
+    backBtn:'/keperluan',
     lists:[],
     list:{},
     meta:{
@@ -40,20 +39,19 @@ export const state = () => ({
             required:true
         },
         {
-            label:"Alamat",
-            model: 'alamat',
-            name:'alamat',
-            id:'input-alamat',
-            type:'text',
-            placeholder:'Masukkan alamat',
-            required:true,
-            list:[]
+            label:"No. Urut",
+            model: 'urut',
+            name:'urut',
+            id:'input-urut',
+            type:'number',
+            placeholder:'Masukkan No. Urut',
+            required:true
         },
     ],
     nmodel:{
         kode:'',
         nama:'',
-        alamat:'',
+        urut:''
     },
     alertMessage:"",
     users:[]
@@ -72,7 +70,7 @@ export const mutations = {
         state.nmodel = {
             kode: data.id,
             nama: data.nama,
-            alamat: data.alamat,
+            urut: data.no_urut
         }
     },
 
@@ -80,7 +78,7 @@ export const mutations = {
         state.nmodel={
             kode:'',
             nama:'',
-            alamat:'',
+            urut:''
         }
     },
 
@@ -155,7 +153,7 @@ export const actions = {
             sortby: state.sortBy,
             sortbydesc: state.sortByDesc ? 'DESC':'ASC'
         }
-        const res = await this.$repositories.merchant.perPage(params)
+        const res = await this.$repositories.keperluan.perPage(params)
 
         commit('SET_FINISH',2)
 
@@ -201,7 +199,7 @@ export const actions = {
         commit('SET_FINISH',1)
 
         try{
-            const res = await this.$repositories.merchant.save(state.nmodel)
+            const res = await this.$repositories.keperluan.save(state.nmodel)
         
             commit('SET_FINISH',2)
 
@@ -246,7 +244,7 @@ export const actions = {
     async show({commit,state}, id){
         commit('SET_FINISH',1)
 
-        const res = await this.$repositories.merchant.show(id)
+        const res = await this.$repositories.keperluan.show(id)
         
         commit('SET_MODEL',res.data.data)
         commit('SET_FINISH',2)
@@ -257,7 +255,7 @@ export const actions = {
         commit('SET_FINISH',1)
 
         try{
-            const res = await this.$repositories.merchant.update(state.nmodel.kode, state.nmodel)
+            const res = await this.$repositories.keperluan.update(state.nmodel.kode, state.nmodel)
         
             commit('SET_FINISH',2)
 

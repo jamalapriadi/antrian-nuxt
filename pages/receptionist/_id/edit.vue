@@ -10,7 +10,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
     layout:'main',
     computed:{
-        ...mapState('member',{
+        ...mapState('receptionist',{
             backBtn: state=> state.backBtn,
             forms: state=> state.forms,
             errors: state=> state.errors,
@@ -22,7 +22,7 @@ export default {
     },
     data(){
         return {
-            title:"Update Member",
+            title:"Update Receptionist",
             btnText: "Update",
         }
     },
@@ -30,7 +30,7 @@ export default {
         this.getData()
     },
     methods:{
-        ...mapActions('member',['update','show']),
+        ...mapActions('receptionist',['update','show']),
 
         getData(){
             let app=this;

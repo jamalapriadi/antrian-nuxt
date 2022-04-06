@@ -1,11 +1,7 @@
 <template>
     <div>
         <message :finish="isFinish" :success="success" :message="message" />
-        <nuxt-crud-form-generator 
-        :list="forms" :errors="errors" :title="title" :nmodel="nmodel" :btnText="btnText" :backBtn="backBtn" 
-        @submit="handleSubmit"
-        @changeImage="handleChangeImage"
-        @handleInputPassword="changeHandleInputPassword" />
+        <nuxt-crud-form-generator :list="forms" :errors="errors" :title="title" :nmodel="nmodel" :btnText="btnText" :backBtn="backBtn" @submit="handleSubmit"/>
     </div>
 </template>
 
@@ -14,7 +10,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
     layout:'main',
     computed:{
-        ...mapState('booklet',{
+        ...mapState('keperluan',{
             backBtn: state=> state.backBtn,
             forms: state=> state.forms,
             errors: state=> state.errors,
@@ -26,23 +22,15 @@ export default {
     },
     data(){
         return {
-            title:"Create New Booklet",
+            title:"Buat Data Keperluan",
             btnText: "Save",
         }
     },
     methods:{
-        ...mapActions('booklet',['save','changeImage','changeHandlePassword']),
+        ...mapActions('keperluan',['save']),
 
         handleSubmit(val){
             this.save(val)
-        },
-
-        handleChangeImage(e){
-            this.changeImage(e)
-        },
-
-        changeHandleInputPassword(e){
-            this.changeHandlePassword(e)
         }
     }
 }

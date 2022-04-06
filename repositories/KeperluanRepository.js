@@ -1,4 +1,4 @@
-const resource = '/api/auth/member'
+const resource = '/api/auth/keperluan'
 
 export default ($axios) =>({
     perPage(data){
@@ -6,7 +6,7 @@ export default ($axios) =>({
     },
     
     all(){
-        return $axios.get('/api/auth/member-all')
+        return $axios.get('/api/auth/keperluan-all')
     },
 
     save(payload){

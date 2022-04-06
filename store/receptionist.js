@@ -1,20 +1,14 @@
 export const state = () => ({
-    judul: 'Member',
+    judul: 'Merchant',
     fields:[
         {key:'No', label:'No.', sortable:false, thStyle:{with:'5%'}},
-        {key:'first_name', label:'First Name', sortable:false},
-        {key:'last_name', label:'Last Name', sortable:false},
-        // {key:'address', label:'Alamat', sortable:false},
-        {key:'phone', label:'Phone', sortable:false},
-        {key:'activemember', label:'Active', sortable:false},
-        {key:'qrmember', label:'QRCode', sortable:false, thStyle:{width:'15%'}},
+        {key:'nama', label:'Nama', sortable:false},
         {key: 'actions',label:'', sortable: false, thStyle:{width:'15%'}}, 
     ],
-    addLink: '/member/create',
+    addLink: '/receptionist/create',
     btnAction:true,
-    btnImport:true,
-    edit_data_form: '/member',
-    backBtn:'/member',
+    edit_data_form: '/receptionist',
+    backBtn:'/receptionist',
     lists:[],
     list:{},
     meta:{
@@ -35,185 +29,26 @@ export const state = () => ({
     errors:{},
     forms:[
         {
-            label:"Type",
-            model: 'type',
-            name:'type',
+            label:"Nama",
+            model: 'nama',
+            name:'nama',
             id:'input-nama',
-            type:'select',
-            placeholder:'Masukkan Type',
-            required:true,
-            list:[
-                {
-                    id:'SH',
-                    nama:'SH'
-                }
-            ]
-        },
-        {
-            label:"Title",
-            model: 'title',
-            name:'title',
-            id:'input-nama',
-            type:'select',
-            placeholder:'Masukkan Title',
-            required:true,
-            list:[
-                {
-                    id:'Mr.',
-                    nama:'Mr.'
-                },
-                {
-                    id:'Mrs.',
-                    nama:'Mrs.'
-                }
-            ]
-        },
-        {
-            label:"First Name",
-            model: 'first_name',
-            name:'first_name',
-            id:'input-name',
             type:'text',
-            placeholder:'Masukkan First Name',
+            placeholder:'Masukkan Nama',
             required:true
-        },
-        {
-            label:"Last Name",
-            model: 'last_name',
-            name:'last_name',
-            id:'input-name',
-            type:'text',
-            placeholder:'Masukkan last Name',
-            required:true
-        },
-        {
-            label:"VIP Level",
-            model: 'vip_level',
-            name:'vip_level',
-            id:'input-vip',
-            type:'number',
-            placeholder:'Masukkan VIP Level',
-            required:true
-        },
-        {
-            label:"Registration Date",
-            model: 'registration_date',
-            name:'registration_date',
-            id:'input-registration_date',
-            type:'date',
-            placeholder:'Masukkan Registration Date',
-            required:true
-        },
-        {
-            label:"Renew Date",
-            model: 'renew_date',
-            name:'renew_date',
-            id:'input-renew_date',
-            type:'date',
-            placeholder:'Masukkan renew Date',
-            required:true
-        },
-        {
-            label:"Valid Until",
-            model: 'valid_until',
-            name:'valid_until',
-            id:'input-valid_until',
-            type:'date',
-            placeholder:'Masukkan valid until',
-            required:true
-        },
-        {
-            label:"Address",
-            model: 'address',
-            name:'address',
-            id:'input-address',
-            type:'textarea',
-            placeholder:'Masukkan Address',
-            required:true
-        },
-        {
-            label:"Phone",
-            model: 'phone',
-            name:'phone',
-            id:'input-phone',
-            type:'text',
-            placeholder:'Masukkan phone',
-            required:true
-        },
-        {
-            label:"Fax",
-            model: 'fax',
-            name:'fax',
-            id:'input-fax',
-            type:'text',
-            placeholder:'Masukkan fax',
-            required:true
-        },
-        {
-            label:"Contact",
-            model: 'contact',
-            name:'contact',
-            id:'input-contact',
-            type:'text',
-            placeholder:'Masukkan contact',
-            required:true
-        },
-        {
-            label:"Email",
-            model: 'email',
-            name:'email',
-            id:'input-email',
-            type:'email',
-            placeholder:'Masukkan email',
-            required:true
-        },
-        {
-            label:"Birthday",
-            model: 'birthday',
-            name:'birthday',
-            id:'input-birthday',
-            type:'date',
-            placeholder:'Masukkan birthday',
-            required:true
-        },
-        
-        {
-            label:"Foto",
-            model: 'file',
-            name:'file',
-            id:'input-file',
-            type:'image',
-            placeholder:'Pilih Image',
-            required:true,
-            list:[]
         },
     ],
     nmodel:{
         kode:'',
-        type:'SH',
-        title:'Mr.',
-        first_name:'',
-        last_name:'',
-        vip_level:5,
-        registration_date:'',
-        renew_date:'',
-        valid_until:'',
-        address:'',
-        phone:'',
-        fax:'',
-        contact:'',
-        email:'',
-        birthday:'',
-        image:'',
-        image_url:''
+        nama:''
     },
     alertMessage:"",
-    roles:[]
+    users:[]
 })
 
 export const mutations = {
-    SET_ROLES(state,data){
-        state.roles = data
+    SET_USER(state,data){
+        state.users = data
     },
 
     CHANGE_IMAGE(state, file){
@@ -223,44 +58,14 @@ export const mutations = {
     SET_MODEL(state, data){
         state.nmodel = {
             kode: data.id,
-            type: data.type,
-            title: data.title,
-            first_name: data.first_name,
-            last_name: data.last_name,
-            vip_level:data.vip_level,
-            registration_date: data.registration_date,
-            renew_date: data.renewal_date,
-            valid_until: data.valid_until,
-            address: data.address,
-            phone: data.phone,
-            fax:data.fax,
-            contact:data.contact,
-            email:data.email,
-            birthday:data.birthday,
-            image: data.photo,
-            image_url: data.photo_url
+            nama: data.nama,
         }
     },
 
     SET_RESET_MODEL(state){
         state.nmodel={
             kode:'',
-            type:'SH',
-            title:'Mr.',
-            first_name:'',
-            last_name:'',
-            vip_level:5,
-            registration_date:'',
-            renew_date:'',
-            valid_until:'',
-            address:'',
-            phone:'',
-            fax:'',
-            contact:'',
-            email:'',
-            birthday:'',
-            image:'',
-            image_url:''
+            nama:''
         }
     },
 
@@ -335,7 +140,7 @@ export const actions = {
             sortby: state.sortBy,
             sortbydesc: state.sortByDesc ? 'DESC':'ASC'
         }
-        const res = await this.$repositories.member.perPage(params)
+        const res = await this.$repositories.receptionist.perPage(params)
 
         commit('SET_FINISH',2)
 
@@ -381,7 +186,7 @@ export const actions = {
         commit('SET_FINISH',1)
 
         try{
-            const res = await this.$repositories.member.save(state.nmodel)
+            const res = await this.$repositories.receptionist.save(state.nmodel)
         
             commit('SET_FINISH',2)
 
@@ -426,7 +231,7 @@ export const actions = {
     async show({commit,state}, id){
         commit('SET_FINISH',1)
 
-        const res = await this.$repositories.member.show(id)
+        const res = await this.$repositories.receptionist.show(id)
         
         commit('SET_MODEL',res.data.data)
         commit('SET_FINISH',2)
@@ -437,7 +242,7 @@ export const actions = {
         commit('SET_FINISH',1)
 
         try{
-            const res = await this.$repositories.member.update(state.nmodel.kode, state.nmodel)
+            const res = await this.$repositories.receptionist.update(state.nmodel.kode, state.nmodel)
         
             commit('SET_FINISH',2)
 
@@ -500,15 +305,14 @@ export const actions = {
                     }, 3000)
                 }
             })
-    },
-
-    changeImage({commit, state}, file){
-        commit('CHANGE_IMAGE', file)
-    },
-
-    changeHandlePassword({commit}, e){
-        commit('SET_PASSWORD')
-    },
-
+    },   
     
+    async alluser({dispatch, commit}){
+        commit('SET_FINISH',1)
+
+        const res = await this.$repositories.user.all()
+        
+        commit('SET_USER',res.data.data)
+        commit('SET_FINISH',2)
+    }
 }

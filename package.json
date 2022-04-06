@@ -20,6 +20,7 @@
     "nuxt": "^2.15.8",
     "vee-validate": "^4.5.10",
     "vue": "^2.6.14",
+    "vue-html-to-paper": "^1.4.4",
     "vue-js-toggle-button": "^1.3.3",
     "vue-qr": "^3.2.4",
     "vue-read-more": "^1.1.1",
