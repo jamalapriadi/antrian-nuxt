@@ -49,7 +49,7 @@
                         
                         <!-- <multiselect v-if="l.type=='multiselect'" :name="l.name" v-model="nmodel[l.model]" :options="l.list" :searchable="true" :required="l.required" :allow-empty="false" :close-on-select="true" :show-labels="false" placeholder="Select" label="nama" track-by="id"></multiselect> -->
                         
-                        <select v-if="l.type=='select'" :name="l.name" v-model="nmodel[l.model]" @change="changeSelect(l.model, nmodel[l.model])" class="form-control" :class="{'is-invalid': errors[l.name]}">
+                        <select v-if="l.type=='select'" :name="l.name" v-model="nmodel[l.model]" @change="changeSelect(l.model, nmodel[l.model])" class="form-select" :class="{'is-invalid': errors[l.name]}">
                             <option value="" disabled>Pilih {{l.label}}</option>
                             <option v-for="(k,ix) in l.list" :key="'s'+ix" :value="k.id">{{k.nama}}</option>
                         </select>
@@ -107,7 +107,8 @@ export default {
         },
         nmodel:{
             type:Object
-        }
+        },
+        
     },
     data(){
         return{

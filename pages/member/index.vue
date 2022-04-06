@@ -6,6 +6,7 @@
             :title="title" 
             :fields="fields" 
             :addLink="addLink" 
+            :btnImport="btnImport"
             :btnAction="btnAction" 
             :meta="meta" 
             :lists="lists"
@@ -16,7 +17,62 @@
             @delete="handleDelete"
             @changePerPage="handlechangePerPage"
             @pagination="handlePagination"
-            @changeStatusUser="handleChangeStatusUser" />
+            @showFormImport="handleFormInput"
+            @openQr="handleOpenQr"
+            @changeStatusMember="handleChangeStatusUser" />
+
+        <b-modal
+            id="modal-prevent-closing"
+            ref="modal"
+            title="Import Data User"
+            no-close-on-backdrop
+            hide-header-close
+            @show="resetModal"
+            @hidden="resetModal"
+            @ok="handleSubmitImport"
+            >
+
+            <div v-if="pesan" :class="pesanclass">
+                {{pesan}}
+            </div>
+
+            <form ref="form" id="form" @submit.stop.prevent="handleSubmitImport" enctype="multipart/form-data">
+                <b-spinner v-if="loading2" variant="success" type="grow" label="Spinning"></b-spinner>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Import File</label>
+                    <input type="file" name="file" class="form-control">
+                </div>
+
+                <div class="alert alert-info" role="alert" style="margin-top:10px">
+                    <p>
+                        <small>
+                            Anda dapat men-downlaod 'Format DB Member' 
+                            untuk memastikan data yang akan anda upload sudah sesuai dengan format yang ditentukan
+                        </small> 
+                        <a href='#' @click.prevent="downloadImportMember">
+                            <span class='badge bg-info' style='cursor: pointer;'>
+                                Klik untuk Download Format DB Member
+                            </span>
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </b-modal>
+
+        <b-modal id="modal-my-qrcode" hide-footer hide-header-close>
+            <template #modal-title>
+                {{namaqr}} QRCode
+            </template>
+
+            <center>
+                <vue-qr :size="400" id="qrcode" :text="logoBarcode" qid="testid"></vue-qr>
+            </center>
+
+            <div class="text-center" style="margin-top:10px;">
+                <a href="#" class="btn btn-block btn-primary" @click.prevent="downloadQr">Download</a>
+            </div>
+        </b-modal>
         
     </div>
 </template>
@@ -39,6 +95,7 @@ export default {
             meta: state => state.meta,
             isFinish: state => state.isFinish,
             addLink: state => state.addLink,
+            btnImport: state => state.btnImport,
             btnAction: state => state.btnAction,
             success: state => state.success,
             message: state => state.message,
@@ -49,6 +106,12 @@ export default {
     data(){
         return{
             title:'Member',
+            loading2:false,
+            pesan:'',
+            pesanclass:'',
+            mylinkuser:'',
+            logoBarcode:'',
+            namaqr:''
         }
     },
     methods:{
@@ -102,6 +165,75 @@ export default {
 
         handleChangeStatusUser(){
             this.get_data()
+        },
+
+        handleFormInput(){
+            this.pesan = ""
+            this.pesanclass=""
+            this.$bvModal.show('modal-prevent-closing')
+        },
+
+        resetModal(){
+
+        },
+
+        resetModal(){
+
+        },
+
+        handleSubmitImport(e){
+            e.preventDefault();
+            var form = document.getElementById('form');
+            this.loading2 = true
+            let formData = new FormData(form);
+            
+            this.$axios.post('/api/auth/import-member', formData).then(response => {
+                this.loading2=false;
+                if(response.data.success==true){
+                    this.pesan = response.data.message
+                    this.pesanclass = 'alert alert-success'
+                }else{
+                    this.pesan = response.data.message
+                    this.pesanclass = 'alert alert-danger'
+                }
+            }).catch(error => {
+                // if (error.response.status = 422) {
+                //     this.errors = error.response.data;
+                //     console.log(this.errors);
+                // }
+
+                // if (error.response.status = 500) {
+                //     this.loading2 = false
+                //     this.pesan = response.data.message
+                //     this.pesanclass = 'alert alert-danger'
+                // }
+            });
+        },
+
+        downloadImportMember(){
+            window.open(process.env.LARAVEL_ENDPOINT+"/api/export-member", "_blank");    
+        },
+
+        handleOpenQr(val){
+            this.namaqr = val.item.nama
+            this.logoBarcode = val.item.id
+            this.$bvModal.show('modal-my-qrcode')
+        },
+
+        downloadQr(){
+            var oQrcode = document.querySelector('#qrcode')
+            var url = oQrcode.src
+            var a = document.createElement('a')
+            var event = new MouseEvent('click')
+
+            //Download image name
+            a.download = this.namaqr+' QRCode'
+
+            //url 
+            a.href = url 
+
+            //Synthesis function, execute download 
+            a.dispatchEvent(event)
         }
     }
 }

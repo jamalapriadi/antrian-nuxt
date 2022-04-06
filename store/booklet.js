@@ -5,6 +5,7 @@ export const state = () => ({
         {key:'nama', label:'Nama', sortable:false},
         {key:'keterangan', label:'Keterangan', sortable:false},
         {key:'syaratrow', label:'Syarat & Ketentuan', sortable:false},
+        {key:'harga', label:'Potongan', sortable:false},
         {key:'imagebooklet', label:'Image', sortable:false},
         {key: 'actions',label:'', sortable: false, thStyle:{width:'15%'}}, 
     ],
@@ -61,6 +62,54 @@ export const state = () => ({
             list:[]
         },
         {
+            label:"Merchant Type",
+            model: 'type',
+            name:'type',
+            id:'input-type',
+            type:'select',
+            placeholder:'Masukkan Merchant Type',
+            required:true,
+            list:[
+                {
+                    id:'Restaurant',
+                    nama:'Restaurant'
+                },
+                {
+                    id:'Rekreasi',
+                    nama:'Rekreasi'
+                }
+            ]
+        },
+        {
+            label:"Jenis Potongan(Rupiah/Persentase)",
+            model: 'potongan',
+            name:'potongan',
+            id:'input-potongan',
+            type:'select',
+            placeholder:'Masukkan Jenis Potongan',
+            required:true,
+            list:[
+                {
+                    id:'Rupiah',
+                    nama:'Rupiah'
+                },
+                {
+                    id:'Persentase',
+                    nama:'Persentase'
+                }
+            ]
+        },
+        {
+            label:"Jumlah Potongan",
+            model: 'jumlah',
+            name:'jumlah',
+            id:'input-jumlah',
+            type:'number',
+            placeholder:'Masukkan Jumlah Potongan',
+            required:true,
+            list:[]
+        },
+        {
             label:"Foto",
             model: 'file',
             name:'file',
@@ -76,6 +125,9 @@ export const state = () => ({
         nama:'',
         keterangan:'',
         syarat:'',
+        type:'Restaurant',
+        potongan:'Rupiah',
+        jumlah:0,
         image:'',
         image_url:''
     },
@@ -97,6 +149,9 @@ export const mutations = {
             nama: data.nama,
             keterangan: data.keterangan,
             syarat: data.syarat,
+            type: data.merchant_type,
+            potongan: data.potongan,
+            jumlah: data.jumlah,
             image: data.image,
             image_url: data.image_url
         }
@@ -108,6 +163,9 @@ export const mutations = {
             nama:'',
             keterangan:'',
             syarat:'',
+            type:'Restaurant',
+            potongan:'Rupiah',
+            jumlah:0,
             image:'',
             image_url:''
         }

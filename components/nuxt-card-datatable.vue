@@ -20,6 +20,11 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                 New {{title}}
                             </nuxt-link>
+
+                            <a v-if="btnImport" href="#" class="btn btn-success" @click.prevent="showFormImport">
+	                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><ellipse cx="12" cy="6" rx="8" ry="3" /><path d="M4 6v8m5.009 .783c.924 .14 1.933 .217 2.991 .217c4.418 0 8 -1.343 8 -3v-6" /><path d="M11.252 20.987c.246 .009 .496 .013 .748 .013c4.418 0 8 -1.343 8 -3v-6m-18 7h7m-3 -3l3 3l-3 3" /></svg>
+                                Import {{title}}
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -113,6 +118,26 @@
                         </span>
                     </template>
 
+                    <template v-if="btnAction == true" v-slot:cell(activemember)="row">
+                        <span v-show="row.item.active == 'Y'" style="padding-top:15px">
+                            <toggle-button :value="true"
+                                :sync="true"
+                                name="phone"
+                                :labels="{checked: 'Ya', unchecked: 'No'}"
+                                :color="{checked: '#7DCE94', unchecked: '#82C7EB'}"
+                                @change="nonAktifMember(row.item.id)"/>
+                        </span>
+
+                        <span v-show="row.item.active == 'N'" style="padding-top:15px">
+                            <toggle-button :value="false"
+                                name="phone"
+                                :sync="false"
+                                :labels="{checked: 'Ya', unchecked: 'No'}"
+                                :color="{checked: '#7DCE94', unchecked: '#82C7EB'}"
+                                @change="aktifMember(row.item.id)"/>
+                        </span>
+                    </template>
+
                     <template v-if="btnAction == true" v-slot:cell(actions)="row">
                         <div class="btn-list flex-nowrap">
                             <div class="dropdown">
@@ -173,6 +198,15 @@
                                     </a>
                                 </div>
                             </div>
+                        </div>
+                    </template>
+
+                    <template v-if="btnAction == true" v-slot:cell(qrmember)="row">
+                        <div class="btn-list flex-nowrap">
+                            <a href="#" class="btn btn-success" @click.prevent="showQrcode(row)">
+	                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="4" width="6" height="6" rx="1" /><line x1="7" y1="17" x2="7" y2="17.01" /><rect x="14" y="4" width="6" height="6" rx="1" /><line x1="7" y1="7" x2="7" y2="7.01" /><rect x="4" y="14" width="6" height="6" rx="1" /><line x1="17" y1="7" x2="17" y2="7.01" /><line x1="14" y1="14" x2="17" y2="14" /><line x1="20" y1="14" x2="20" y2="14.01" /><line x1="14" y1="14" x2="14" y2="17" /><line x1="14" y1="20" x2="17" y2="20" /><line x1="17" y1="17" x2="20" y2="17" /><line x1="20" y1="17" x2="20" y2="20" /></svg>
+                                QRCode
+                            </a>
                         </div>
                     </template>
 
@@ -287,6 +321,10 @@ export default {
         },
         editUrl:{
             type:String
+        },
+        btnImport:{
+            type:Boolean,
+            default:false
         }
     },
     data(){
@@ -315,6 +353,10 @@ export default {
 
         showQrcode(val){
             this.$emit('openQr', val)
+        },
+
+        showFormImport(){
+            this.$emit('showFormImport')
         },
 
         goToSetPermission(val){
@@ -402,6 +444,67 @@ export default {
                     this.$swal('Cancelled', 'User tidak di aktifkan', 'info')
 
                     this.$emit('changeStatusUser')
+                }
+            })
+        },
+
+        nonAktifMember(id){
+            this.$swal({
+                title: 'Non Aktif User?',
+                text: 'Apakah anda yakin ingin menonaktifkan member ini!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Lanjutkan!',
+                cancelButtonText: 'Tidak',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            })
+            .then((result) => {
+                if(result.value) {
+                    this.$axios.post('api/auth/status-member/'+id+'?status=N')
+                        .then(response => {
+                            if(response.data.success==true){
+                                this.$swal('Non Aktif', 'Non Aktif member berhasil' , 'success');
+                            }else{
+                                this.$swal('Non Aktif', 'Non aktif member gagal' , 'error');
+                            }
+
+                            this.$emit('changeStatusMember')
+                        })
+                } else {
+                    this.$swal('Cancelled', 'Member tidak di non aktifkan', 'info')
+                    this.$emit('changeStatusUser')
+                }
+            })
+        },
+
+        aktifMember(id){
+            this.$swal({
+                title: 'Aktif Member?',
+                text: 'Apakah anda yakin ingin mengaktifkan member ini!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Lanjutkan!',
+                cancelButtonText: 'Tidak',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            })
+            .then((result) => {
+                if(result.value) {
+                    this.$axios.post('api/auth/status-member/'+id+'?status=Y')
+                        .then(response => {
+                            if(response.data.success==true){
+                                this.$swal('Aktif', 'Aktif member berhasil' , 'success');
+                            }else{
+                                this.$swal('Aktif', 'aktif member gagal' , 'error');
+                            }
+
+                            this.$emit('changeStatusMember')
+                        })
+                } else {
+                    this.$swal('Cancelled', 'Member tidak di aktifkan', 'info')
+
+                    this.$emit('changeStatusMember')
                 }
             })
         },
