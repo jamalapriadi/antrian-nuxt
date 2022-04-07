@@ -127,8 +127,6 @@ export default {
                     this.loading = false 
                     this.isFinish = 2
 
-                    console.log(resp);
-
                     if(resp.data.success == true){
                         this.success = true
                         this.message = resp.data.message
