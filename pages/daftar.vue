@@ -140,6 +140,15 @@ export default {
                         this.message = resp.data.message
                         this.cetak = {}
                     }
+
+                    setTimeout(() => {
+                        this.success = false 
+                        this.message = ''
+                        this.state = {
+                            type:'',
+                            keperluan:''
+                        }
+                    }, 3000)
                     
                 })
         },
