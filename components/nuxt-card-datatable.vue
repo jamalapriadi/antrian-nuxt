@@ -16,7 +16,7 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none" v-if="btnAction">
                         <div class="btn-list">
-                            <nuxt-link :to="addLink"  class="btn btn-primary d-none d-sm-inline-block">
+                            <nuxt-link v-if="addLink" :to="addLink"  class="btn btn-primary d-none d-sm-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                 New {{title}}
                             </nuxt-link>
@@ -25,6 +25,8 @@
 	                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><ellipse cx="12" cy="6" rx="8" ry="3" /><path d="M4 6v8m5.009 .783c.924 .14 1.933 .217 2.991 .217c4.418 0 8 -1.343 8 -3v-6" /><path d="M11.252 20.987c.246 .009 .496 .013 .748 .013c4.418 0 8 -1.343 8 -3v-6m-18 7h7m-3 -3l3 3l-3 3" /></svg>
                                 Import {{title}}
                             </a>
+
+                            <slot name="btnTambahan"></slot>
                         </div>
                     </div>
                 </div>
@@ -96,6 +98,14 @@
 
                     <template v-if="btnAction == true" v-slot:cell(roleuser)="row">
                         <div v-for="(l,idx) in row.item.role" :key="idx" class="text-muted" style="margin-right:10px;margin-bottom:10px">{{l.name}}</div>
+                    </template>
+
+                    <template v-slot:cell(alamatpelayanan)="row">
+                        <read-more more-str="read more" :text="row.item.alamat" link="#" less-str="read less" :max-chars="60"></read-more>
+                    </template>
+
+                    <template v-slot:cell(catatanpelayanan)="row">
+                        <read-more more-str="read more" :text="row.item.catatan" link="#" less-str="read less" :max-chars="60"></read-more>
                     </template>
 
                     <template v-if="btnAction == true" v-slot:cell(activeuser)="row">

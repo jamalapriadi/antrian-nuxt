@@ -72,10 +72,10 @@
                             <hr>
 
                             <div class="text-center" v-if="start_pelayanan == false">
-                                <!-- <a href="#" class="btn btn-warning">
+                                <a href="#" class="btn btn-warning">
 	                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 8a3 3 0 0 1 0 6" /><path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" /><path d="M12 8h0l4.524 -3.77a0.9 .9 0 0 1 1.476 .692v12.156a0.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" /></svg>
                                     Panggil Antrian
-                                </a> -->
+                                </a>
                                 <a href="#" class="btn btn-primary" @click.prevent="mulaiPelayanan(result.current_antrian.id, result.current_antrian.antrian_id)">
 	                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 12v-6a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v8" /><path d="M4 18h17" /><path d="M18 15l3 3l-3 3" /></svg>
                                     Mulai Pelayanan
@@ -112,12 +112,16 @@
 
                                 <div class="mb-3">
                                     <label for="" class="form-label">Alamat</label>
-                                    <textarea name="alamat" id="alamat" cols="30" rows="3" class="form-control" placeholder="Alamat" v-model="mulai.alamat"></textarea>
+                                    <client-only placeholder="loading...">
+                                        <ckeditor-nuxt :config="editorConfig" v-model="mulai.alamat" />
+                                    </client-only>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="" class="form-label">Catatan</label>
-                                    <textarea name="catatan" id="catatan" cols="30" rows="5" class="form-control" placeholder="Catatan" v-model="mulai.catatan"></textarea>
+                                    <client-only placeholder="loading...">
+                                        <ckeditor-nuxt :config="editorConfig" v-model="mulai.catatan" />
+                                    </client-only>
                                 </div>
 
                                 <div class="card-footer text-end">
@@ -147,6 +151,9 @@
 
 <script>
 export default {
+    components: {
+        'ckeditor-nuxt': () => { return import('@blowstack/ckeditor-nuxt') },
+    },
     data(){
         return {
             list:{},
@@ -173,7 +180,24 @@ export default {
             loading2:false,
             message2:'',
             messageclass2:'',
-            errors2:[]
+            errors2:[],
+            editorConfig: {
+                simpleUpload: {
+                    uploadUrl: process.env.LARAVEL_ENDPOINT+'/api/uploads',
+                    headers: {
+                        // 'Authorization': 'optional_token'
+                        'accept': 'application/json'
+                    }
+                },
+                removePlugins: [
+                    'Title',
+                    'Code',
+                    'Superscript',
+                    'Subscript',
+                    'PageBreak',
+                    'MathType'
+                ],
+            },
         }
     },
     mounted(){
