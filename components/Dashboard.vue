@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-6" style="margin-bottom:20px">
                 <div class="card">
                     <div class="card-body" style="position: relative;">
                         <h3 class="card-title">Kategori Antrian</h3>
@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-6" style="margin-bottom:20px">
                 <div class="card">
                     <div class="card-body" style="position: relative;">
                         <h3 class="card-title">Keperluan</h3>
@@ -22,6 +22,32 @@
                             <donat-report v-if="renderComponent2" :barChartData="keperluanChartData" :barChartOptions="barChartOptions" />
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-12" style="margin-bottom:20px">
+                <div class="card">
+                    <div class="card-header">Table Antrian</div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Tanggal</th>
+                                <th>Kategori</th>
+                                <th>No. Antrian</th>
+                                <th>Keperluan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(l,idx) in antrians" :key="idx">
+                                <td>{{(idx+1)}}</td>
+                                <td>{{l.tanggal}}</td>
+                                <td>{{l.kategori}}</td>
+                                <td>{{l.no_antrian}}</td>
+                                <td>{{l.keperluan}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -38,6 +64,7 @@ export default {
         return {
             renderComponent:false,
             renderComponent2:false,
+            antrians:[],
             barChartData: {
                 labels: ['Prioritas', 'Umum'],
                 datasets: [
@@ -65,6 +92,7 @@ export default {
     mounted(){
         this.getKategoriAntrian()  
         this.getKeperluan()
+        this.getAntrian()
     },
     methods:{
         getKategoriAntrian(){
@@ -114,6 +142,13 @@ export default {
                     this.$nextTick(() => {
                         this.renderComponent2 = true;
                     });
+                })
+        },
+
+        getAntrian(){
+            this.$axios.get('/api/auth/antrian')
+                .then(resp => {
+                    this.antrians = resp.data.data
                 })
         }
     }

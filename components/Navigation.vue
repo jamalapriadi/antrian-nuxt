@@ -1,16 +1,16 @@
 <template>
     <div class="navbar-expand-md">
         <div class="collapse navbar-collapse" id="navbar-menu">
-            <div class="navbar navbar-light">
+            <div class="navbar navbar-light bg-success">
                 <div class="container-xl">
                     <ul class="navbar-nav">
                         <li v-for="(l,idx) in menus" :key="'menu'+idx" v-bind:class="getClass(l)">
-                            <nuxt-link :to="l.to" v-bind:class="getClassMenu(l)" v-if="l.type == 'menu' && l.access == true">
+                            <nuxt-link :to="l.to" v-bind:class="getClassMenu(l)" v-if="l.type == 'menu' && l.access == true" style="color:white !important">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block" v-html="l.icon"></span>
                                 <span class="nav-link-title" v-html="l.title"></span>
                             </nuxt-link>
 
-                            <nuxt-link v-if="l.type == 'dropdown' && l.access == true" :to="l.to" v-bind:class="getClassMenu(l)" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                            <nuxt-link v-if="l.type == 'dropdown' && l.access == true" :to="l.to" v-bind:class="getClassMenu(l)" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" style="color:white !important">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block" v-html="l.icon"></span>
                                 <span class="nav-link-title" v-html="l.title"></span>
                             </nuxt-link>

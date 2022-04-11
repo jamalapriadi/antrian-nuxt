@@ -2,7 +2,7 @@
     <div>
         <div class="card card-md">
             <div class="card-body">
-                <h2 class="card-title text-center mb-4">Login to your account</h2>
+                <h2 class="card-title text-center mb-4">Login ke akun anda</h2>
 
                 <message :finish="isFinish" :success="success" :message="message" />
                 

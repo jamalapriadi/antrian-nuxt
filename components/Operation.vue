@@ -72,7 +72,7 @@
                             <hr>
 
                             <div class="text-center" v-if="start_pelayanan == false">
-                                <a href="#" class="btn btn-warning">
+                                <a href="#" class="btn btn-warning" @click.prevent="panggilAntrian">
 	                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 8a3 3 0 0 1 0 6" /><path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" /><path d="M12 8h0l4.524 -3.77a0.9 .9 0 0 1 1.476 .692v12.156a0.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" /></svg>
                                     Panggil Antrian
                                 </a>
@@ -146,6 +146,34 @@
                 <!-- <pre>{{result}}</pre> -->
             </div>
         </div>
+
+        <!-- <form @submit.prevent="panggilAntrian">
+            <h1>Speech Example</h1>
+
+            <h1>{{selectedVoice}}</h1>
+
+            <div class="form-group" v-if="voiceList.length">
+                <label for="voices">Select a voice</label>
+                <select class="form-control" id="voices" v-model="selectedVoice">
+                    <option v-for="(voice, index) in voiceList" :key="index" :data-lang="voice.lang" :value="index">
+                        {{ voice.name }} ({{ voice.lang }})
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="your-name">Your name</label>
+                <input class="form-control" id="your-name" type="text" v-model="name" required>
+            </div>
+
+            <div v-if="isLoading" class="text-center">
+                <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+            </div>
+
+            <button type="submit" class="btn btn-success">Greet</button>
+        </form> -->
+
+
     </div>
 </template>
 
@@ -198,11 +226,34 @@ export default {
                     'MathType'
                 ],
             },
+            isLoading: false,
+            name: '',
+            selectedVoice: 8,
+            synth: window.speechSynthesis,
+            voiceList: [],
+            greetingSpeech: new window.SpeechSynthesisUtterance()
         }
     },
     mounted(){
         this.cekJoinReceptionist()
         this.getAvailableReceptionist()
+
+        this.voiceList = this.synth.getVoices()
+
+        if (this.voiceList.length) {
+            this.isLoading = false
+        }
+
+        this.synth.onvoiceschanged = () => {
+            this.voiceList = this.synth.getVoices()
+            // give a bit of delay to show loading screen
+            // just for the sake of it, I suppose. Not the best reason
+            setTimeout(() => {
+                this.isLoading = false
+            }, 800)
+        }
+
+        this.listenForSpeechEvents()
     },
     methods:{
         cekJoinReceptionist(){
@@ -223,6 +274,22 @@ export default {
                         this.result = resp.data
                         this.current_antrian = resp.data.current_antrian
                         this.other_antrian = resp.data.other_antrian
+
+                        if(this.list.success == true)
+                        {
+                            if(this.list.receptionist){
+                                if(this.list.receptionist.receptionis)
+                                {
+                                    if(resp.data.current_antrian)
+                                    {
+                                        if(resp.data.current_antrian.antrian)
+                                        {
+                                            this.name = "Nomor Antrian "+resp.data.current_antrian.antrian.no_antrian+" di "+this.list.receptionist.receptionis.nama
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }else{
                         this.result = resp.data
                         this.current_antrian = {}
@@ -340,6 +407,29 @@ export default {
                     this.$swal('Cancelled', 'Anda masih dalam konsultasi ini', 'info')
                 }
             })
+        },
+
+        listenForSpeechEvents () {
+            this.greetingSpeech.onstart = () => {
+                this.isLoading = true
+            }
+
+            this.greetingSpeech.onend = () => {
+                this.isLoading = false
+            }
+        },
+
+        /**
+         * Shout at the user
+         */
+        panggilAntrian () {
+            // it should be 'craic', but it doesn't sound right
+            this.greetingSpeech.text = `${this.name}`
+
+            this.greetingSpeech.voice = this.voiceList[this.selectedVoice]
+            
+            this.greetingSpeech.rate = 0.76
+            this.synth.speak(this.greetingSpeech)
         }
     }
 }
