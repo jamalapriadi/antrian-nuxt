@@ -10,11 +10,30 @@
                     <div class="text-muted" v-html="message"></div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="" class="control-label">Pilih Receptionist</label>
                     <select name="receptionist" id="receptionist" class="form-select" v-model="state.receptionist">
                         <option v-for="(l,idx) in operations" :key="idx" :value="l.id">{{l.nama}}</option>
                     </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="" class="control-label">Pilih Pelayanan</label>
+                    <!-- <pre>{{state}}</pre> -->
+                    <div v-for="(l,idx) in pelayanans" :key="'u'+idx" style="margin-top:10px">
+                        <label class="form-check">
+                            <b-form-checkbox
+                                :id="'checkbox-'+idx"
+                                :name="'checkbox-'+idx"
+                                :checked="cek[idx]"
+                                value="Y"
+                                unchecked-value="N"
+                                @change="pilih(l.id, $event)"
+                            >
+                                &nbsp; {{l.nama}}
+                            </b-form-checkbox>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="card-footer text-end">
@@ -41,6 +60,16 @@
                             <dt class="col-5">Email:</dt>
                             <dd class="col-7" v-if="list.receptionist.user">{{list.receptionist.user.email}}</dd>
                         </dl>
+
+                        <hr>
+
+                        <div class="text-center">
+                            <a href="#" class="btn btn-danger btn-block" @click.prevent="keluarReceptionist">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M7 12h14l-3 -3m0 6l3 -3" /></svg>
+                                Keluar
+                            </a>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -187,7 +216,8 @@ export default {
             list:{},
             operations:[],
             state:{
-                receptionist:''
+                receptionist:'',
+                keperluan:[]
             },
             loading:false,
             message:'',
@@ -226,6 +256,9 @@ export default {
                     'MathType'
                 ],
             },
+            pelayanans:[],
+            cek:[],
+            selected:[],
             isLoading: false,
             name: '',
             selectedVoice: 8,
@@ -237,6 +270,7 @@ export default {
     mounted(){
         this.cekJoinReceptionist()
         this.getAvailableReceptionist()
+        this.getKeperluan()
 
         this.voiceList = this.synth.getVoices()
 
@@ -257,13 +291,17 @@ export default {
     },
     methods:{
         cekJoinReceptionist(){
+            this.message = ""
             this.$axios.get('/api/auth/get-receptionist')
                 .then(resp => {
                     this.list = resp.data
 
-                    this.receptionist_id = resp.data.receptionist.id
+                    if(resp.data.receptionist)
+                    {
+                        this.receptionist_id = resp.data.receptionist.id
 
-                    this.getListAntrian()
+                        this.getListAntrian()
+                    }
                 })
         },
         getListAntrian(){
@@ -298,9 +336,27 @@ export default {
                 })
         },
         getAvailableReceptionist(){
+            this.operations = []
             this.$axios.get('/api/auth/available-receptionist')
                 .then(resp => {
                     this.operations = resp.data.data
+                })
+        },
+        getKeperluan(){
+            this.pelayanans = []
+            this.state.keperluan = []
+            this.$axios.get('/api/auth/keperluan-all')
+                .then(resp => {
+                    this.pelayanans = resp.data.data
+
+                    for(var a=0;a<this.pelayanans.length;a++)
+                    {
+                        this.cek.push('Y')
+                        this.state.keperluan.push({
+                            id:this.pelayanans[a].id,
+                            pilih:'Y'
+                        })
+                    }
                 })
         },
         setReceptionist(){
@@ -407,6 +463,69 @@ export default {
                     this.$swal('Cancelled', 'Anda masih dalam konsultasi ini', 'info')
                 }
             })
+        },
+
+        keluarReceptionist(){
+            this.$swal({
+                title: 'Warning?',
+                text: 'Apakah anda yakin ingin Keluar?',
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Ya, Keluar',
+                confirmButtonColor: '#EC5941',
+                showCloseButton: true,
+                reverseButtons:true,
+                showLoaderOnConfirm: true,
+                customClass: {
+                    actions:'text-right',
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-white'
+                },
+                buttonsStyling: false
+            })
+            .then((result) => {
+                if(result.value) {
+                    this.$axios.post('/api/auth/signout-receptionist', {
+                        receptionist: this.receptionist_id
+                    }).then(resp => {
+                        if(resp.data.success == true)
+                        {
+                            this.$swal('Success', resp.data.message, 'success')
+                            this.cekJoinReceptionist()
+                        }else{
+                            this.$swal('Gagal', resp.data.message, 'info')
+                        }
+                    })
+                    
+                } else {
+                    this.$swal('Cancelled', 'Anda masih dalam konsultasi ini', 'info')
+                }
+            })
+        },
+
+        pilih(id,e){
+            if(e == 'Y')
+            {
+                this.state.keperluan.push({
+                    id:id,
+                    pilih:'Y'
+                })
+            }else{
+                var baru = []
+
+                for(var a=0; a<this.state.keperluan.length; a++){
+                    if(this.state.keperluan[a].id != id){
+                        baru.push({
+                            id:this.state.keperluan[a].id,
+                            pilih:this.state.keperluan[a].pilih
+                        })
+                    }
+                }
+
+                this.state.keperluan = []
+                this.state.keperluan = baru
+            }
         },
 
         listenForSpeechEvents () {

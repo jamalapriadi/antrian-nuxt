@@ -45,7 +45,8 @@ export default {
     '~/plugins/vue-toggle.js',
     '~/plugins/qr.js',
     '~/plugins/readmore.js',
-    '~/plugins/vue-html-to-paper.js'
+    '~/plugins/vue-html-to-paper.js',
+    '~/plugins/vue-json-excel.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -110,7 +111,7 @@ export default {
                 login: { url: '/api/login', method: 'post'},
                 refresh: { url: '/api/auth/refresh', method: 'post' },
                 user: { url: '/api/auth/me', method: 'get' },
-                logout: { url: '/logout', method: 'post' },
+                logout: { url: '/api/auth/logout', method: 'post' },
                 userInfo: { url: '/api/auth/me', method: 'get' },
             },
             token: {

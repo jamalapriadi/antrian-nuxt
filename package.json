@@ -24,6 +24,7 @@
     "vue-chartjs": "^3.4.0",
     "vue-html-to-paper": "^1.4.4",
     "vue-js-toggle-button": "^1.3.3",
+    "vue-json-excel": "^0.3.0",
     "vue-qr": "^3.2.4",
     "vue-read-more": "^1.1.1",
     "vue-server-renderer": "^2.6.14",

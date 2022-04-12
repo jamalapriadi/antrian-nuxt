@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="col-12" style="margin-bottom:20px">
+            <!-- <div class="col-12" style="margin-bottom:20px">
                 <div class="card">
                     <div class="card-header">Table Antrian</div>
                     <table class="table table-striped">
@@ -49,7 +49,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -92,7 +92,7 @@ export default {
     mounted(){
         this.getKategoriAntrian()  
         this.getKeperluan()
-        this.getAntrian()
+        // this.getAntrian()
     },
     methods:{
         getKategoriAntrian(){
