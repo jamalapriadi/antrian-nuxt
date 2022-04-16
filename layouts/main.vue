@@ -76,14 +76,6 @@ table tbody tr{
     border:1px solid #133a1e;
 }
 
-p{
-    color:#fff;
-}
-
-.text-muted{
-    color:#fff;
-}
-
 h2.page-title{
     color:#133a1e;
     font-weight: bold;
