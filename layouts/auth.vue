@@ -13,7 +13,7 @@
 export default {
     head:{
         bodyAttrs:{
-            class:'border-top-wide border-primary d-flex flex-column'
+            class:''
         }
     },
     data(){

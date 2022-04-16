@@ -22,7 +22,7 @@
         </div>
 
         <div id="printMe" v-if="cetak" style="display:none">
-            <h3 class="text-center">Your Company</h3>
+            <h3 class="text-center">{{company}}</h3>
             <hr>
             <p class="text-center" style="line-height:10px">{{cetak.created_at}}</p>
             <p class="text-center" style="line-height:10px">No. Antrian</p>
@@ -70,7 +70,8 @@ export default {
                 type:'',
                 keperluan:''
             },
-            cetak:{}
+            cetak:{},
+            company: process.env.NAMA_COMPANY
         }
     },
     mounted(){

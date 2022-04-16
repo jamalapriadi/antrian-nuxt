@@ -1,7 +1,7 @@
 <template>
-    <div class="navbar-expand-md">
+    <div class="navbar-expand-md" style="background:#133a1e">
         <div class="collapse navbar-collapse" id="navbar-menu">
-            <div class="navbar navbar-light bg-success">
+            <div class="navbar navbar-light" style="background:#133a1e">
                 <div class="container-xl">
                     <ul class="navbar-nav">
                         <li v-for="(l,idx) in menus" :key="'menu'+idx" v-bind:class="getClass(l)">

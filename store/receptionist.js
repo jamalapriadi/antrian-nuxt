@@ -3,6 +3,7 @@ export const state = () => ({
     fields:[
         {key:'No', label:'No.', sortable:false, thStyle:{with:'5%'}},
         {key:'nama', label:'Nama', sortable:false},
+        {key:'audio', label:'Audio', sortable:false, thStyle:{width:'15%'}},
         {key:'tampillayar', label:'Layar', sortable:false, thStyle:{width:'15%'}},
         {key: 'actions',label:'', sortable: false, thStyle:{width:'15%'}}, 
     ],

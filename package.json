@@ -31,5 +31,8 @@
     "vue-sweetalert2": "^5.0.2",
     "vue-template-compiler": "^2.6.14",
     "webpack": "^4.46.0"
+  },
+  "devDependencies": {
+    
   }
 }

@@ -76,7 +76,7 @@
 
             <div class="col-lg-8 col-12">
                 <div v-if="result">
-                    <div v-if="result.success == true" class="card">
+                    <div v-if="result.success == true" class="card" style="margin-bottom:50px;border:1px solid #fff;">
                         <div class="card-header text-center" style="text-align:center">Antrian Selanjutnya</div>
                         <div class="card-body">
                             <div v-if="loading" class="text-center">
@@ -87,13 +87,13 @@
                             </h1>
 
                             <div class="text-center">
-                                <p>
+                                <p style="color:#133a1e;font-weight:bold">
                                     Kategori : <span v-if="result.current_antrian.antrian">
                                         <span v-if="result.current_antrian.antrian.type == 2">UMUM</span>
                                         <span v-if="result.current_antrian.antrian.type == 1" style="color:red;font-weight:bold">DIFABEL/PRIORITAS</span>
                                     </span>
                                 </p>
-                                <p v-if="result.current_antrian.antrian" style="line-height:5px">
+                                <p v-if="result.current_antrian.antrian" style="line-height:5px;color:#133a1e;font-weight:bold">
                                     Keperluan : <span v-if="result.current_antrian.antrian.keperluan" style="font-weight:bold;">{{result.current_antrian.antrian.keperluan.nama}}</span>
                                 </p>
                             </div>
@@ -101,7 +101,12 @@
                             <hr>
 
                             <div class="text-center" v-if="start_pelayanan == false">
-                                <a href="#" class="btn btn-warning" @click.prevent="panggilAntrian">
+                                <a href="#" v-if="result.ada_audio == 'N'" class="btn btn-warning" @click.prevent="panggilAntrian">
+	                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 8a3 3 0 0 1 0 6" /><path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" /><path d="M12 8h0l4.524 -3.77a0.9 .9 0 0 1 1.476 .692v12.156a0.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" /></svg>
+                                    Panggil Antrian
+                                </a>
+
+                                <a v-if="result.ada_audio == 'Y'" href="#" class="btn btn-warning" @click.prevent="playSound(result.audio)">
 	                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 8a3 3 0 0 1 0 6" /><path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" /><path d="M12 8h0l4.524 -3.77a0.9 .9 0 0 1 1.476 .692v12.156a0.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" /></svg>
                                     Panggil Antrian
                                 </a>
@@ -290,6 +295,13 @@ export default {
         this.listenForSpeechEvents()
     },
     methods:{
+        playSound (sound) {
+            if(sound) {
+                var audio = new Audio(sound);
+                audio.play();
+            }
+        },
+
         cekJoinReceptionist(){
             this.message = ""
             this.$axios.get('/api/auth/get-receptionist')
@@ -492,6 +504,7 @@ export default {
                         if(resp.data.success == true)
                         {
                             this.$swal('Success', resp.data.message, 'success')
+                            this.getAvailableReceptionist()
                             this.cekJoinReceptionist()
                         }else{
                             this.$swal('Gagal', resp.data.message, 'info')

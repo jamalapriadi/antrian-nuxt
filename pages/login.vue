@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="card card-md">
+        <div class="card card-md bg-hijau">
             <div class="card-body">
-                <h2 class="card-title text-center mb-4">Login ke akun anda</h2>
+                <h2 class="card-title text-center mb-4 text-white">Login ke akun anda</h2>
 
                 <message :finish="isFinish" :success="success" :message="message" />
                 
-                <form-generator :list="form" :btnText="'Sign in'" :btnClass="'btn btn-primary w-100'" @submit="handleSubmit" :errors="errors" />
+                <form-generator :list="form" :btnText="'Login'" :btnClass="'btn btn-warning w-100'" @submit="handleSubmit" :errors="errors" />
 
                 <!-- <div class="hr-text">or</div>
 
@@ -119,3 +119,17 @@ export default {
     }
 }
 </script>
+
+<style>
+body{
+    background-color:#133a1e !important;
+}
+
+.bg-hijau{
+    background-color: #419f64;
+}
+
+.text-white{
+    color:#fff;
+}
+</style>
