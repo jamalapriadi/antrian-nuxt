@@ -68,6 +68,10 @@ export default {
     },
     mounted(){
         this.allLayar()
+
+        window.setInterval(() => {
+            this.allLayar()
+        }, 60000)
     },
     methods:{
         allLayar(){
@@ -79,3 +83,17 @@ export default {
     }
 }
 </script>
+
+<style>
+body{
+    background-color:#133a1e !important;
+}
+
+.bg-hijau{
+    background-color: #419f64;
+}
+
+.text-white{
+    color:#fff;
+}
+</style>

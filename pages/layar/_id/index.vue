@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="row" v-if="list">
-            <p class="text-center" style="line-height:10px">Receptionist:</p>
-            <h1 class="text-center" v-if="list.receptionist" style="line-height:20px;margin-bottom:25px;font-size:44px">
+            <p class="text-center" style="line-height:10px;color:#fff">Receptionist:</p>
+            <h1 class="text-center" v-if="list.receptionist" style="line-height:20px;margin-bottom:25px;font-size:44px;color:#fff">
                 <strong>{{list.receptionist.nama}}</strong>
             </h1>
 
             <div v-if="list.success == true">
-                <p v-if="list.user" class="text-center">
+                <p v-if="list.user" class="text-center" style="color:#fff">
                     <strong v-if="list.user.user">Dengan User : {{list.user.user.name}}</strong>
                 </p>
 
@@ -18,13 +18,13 @@
                         </h1>
 
                         <div class="text-center">
-                            <p>
+                            <p style="color:#222">
                                 Kategori : <span v-if="list.current_antrian.antrian">
                                     <span v-if="list.current_antrian.antrian.type == 2">UMUM</span>
                                     <span v-if="list.current_antrian.antrian.type == 1" style="color:red;font-weight:bold">DIFABEL/PRIORITAS</span>
                                 </span>
                             </p>
-                            <p v-if="list.current_antrian.antrian" style="line-height:5px">
+                            <p v-if="list.current_antrian.antrian" style="line-height:5px;color:#222">
                                 Keperluan : <span v-if="list.current_antrian.antrian.keperluan" style="font-weight:bold;">{{list.current_antrian.antrian.keperluan.nama}}</span>
                             </p>
                         </div>
@@ -59,6 +59,10 @@ export default {
     },
     mounted(){
         this.cekLayar()
+
+        window.setInterval(() => {
+            this.cekLayar()
+        }, 60000)
     },
     methods:{
         cekLayar(){
@@ -74,3 +78,17 @@ export default {
     }
 }
 </script>
+
+<style>
+body{
+    background-color:#133a1e !important;
+}
+
+.bg-hijau{
+    background-color: #419f64;
+}
+
+.text-white{
+    color:#fff;
+}
+</style>
