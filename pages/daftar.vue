@@ -9,7 +9,7 @@
         </div>
         
         <div v-if="state.type">
-            <div class="hr-text">Pilih Keperluan - {{select_menu.nama}}</div>
+            <div class="hr-text" style="color:#fff">Pilih Keperluan - {{select_menu.nama}}</div>
             <div v-for="(l,idx) in keperluans" :key="idx" style="margin-bottom:10px">
                 <a href="#" @click.prevent="buatAntrian(l.id)" class="btn btn-light btn-large btn-square w-100" style="padding:20px;font-weight:bold">
                     {{l.nama}}
@@ -57,12 +57,12 @@ export default {
                 {
                     id:2,
                     nama:'UMUM',
-                    class:'btn btn-outline-dark btn-large btn-square w-100'
+                    class:'btn btn-light btn-large btn-square w-100'
                 },
                 {
                     id:1,
                     nama:'DIFABEL/PRIORITAS',
-                    class:'btn btn-outline-danger btn-large btn-square w-100'
+                    class:'btn btn-danger btn-large btn-square w-100'
                 }
             ],
             select_menu:{},
@@ -110,9 +110,9 @@ export default {
             for(var a=0; a<this.menus.length; a++)
             {
                 if(this.menus[a].id == 1){
-                    this.menus[a].class = 'btn btn-outline-danger btn-large btn-square w-100'
+                    this.menus[a].class = 'btn btn-danger btn-large btn-square w-100'
                 }else if(this.menus[a].id == 2){
-                    this.menus[a].class = 'btn btn-outline-dark btn-large btn-square w-100'
+                    this.menus[a].class = 'btn btn-light btn-large btn-square w-100'
                 }
             }
         },
@@ -156,3 +156,17 @@ export default {
     }
 }
 </script>
+
+<style>
+body{
+    background-color:#133a1e !important;
+}
+
+.bg-hijau{
+    background-color: #419f64;
+}
+
+.text-white{
+    color:#fff;
+}
+</style>
