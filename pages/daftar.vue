@@ -22,19 +22,19 @@
         </div>
 
         <div id="printMe" v-if="cetak" style="display:none">
-            <h3 class="text-center">{{company}}</h3>
+            <h3 class="text-center" style="font-size:46px">{{company}}</h3>
             <hr>
-            <p class="text-center" style="line-height:10px">{{cetak.created_at}}</p>
-            <p class="text-center" style="line-height:10px">No. Antrian</p>
-            <h1 class="text-center" style="font-weight:bold">
+            <!-- <p class="text-center" style="line-height:14px;font-size:32px;">{{cetak.created_at}}</p> -->
+            <p class="text-center" style="line-height:14px;font-size:32px;">No. Antrian</p>
+            <h1 class="text-center" style="font-weight:bold; font-size:42px;">
                 {{cetak.no_antrian}}
             </h1>
-            <p class="text-center" style="line-height:10px">Keperluan</p>
-            <p class="text-center" v-if="cetak.keperluan">
+            <p class="text-center" style="line-height:14px;font-size:32px;">Keperluan</p>
+            <p class="text-center" v-if="cetak.keperluan" style="font-size:32px">
                 <strong>{{cetak.keperluan.nama}}</strong>
             </p>
             <hr>
-            <p class="text-center">Terima Kasih</p>
+            <p class="text-center" style="font-size:32px">Terima Kasih</p>
         </div>
     </div>
 </template>
