@@ -134,7 +134,9 @@ export default {
                         this.cetak = resp.data.data
 
                         this.$nextTick(() => {
-                            this.$htmlToPaper('printMe');
+                            // this.$htmlToPaper('printMe');
+                            
+                            window.open(process.env.LARAVEL_ENDPOINT+'/api/antrian/'+this.cetak.id+'/pdf');
                         });
                     }else{
                         this.success = false
@@ -168,5 +170,11 @@ body{
 
 .text-white{
     color:#fff;
+}
+
+@media print {
+  @page {
+    size: auto
+  }
 }
 </style>
